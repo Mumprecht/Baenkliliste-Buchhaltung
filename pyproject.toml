@@ -3,6 +3,10 @@ name = "baenkliliste-buchhaltung"
 version = "0.1.0"
 description = "CSV-Schnittstelle zwischen QFieldCloud und der Bänkliverwaltung/Buchhaltung"
 requires-python = ">=3.14"
+dependencies = [
+    "qfieldcloud-sdk==0.17.0",
+    "keyring==25.7.0",
+]
 authors = [
     { name = "Urs Mumprecht" }
 ]
@@ -13,3 +17,4 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
