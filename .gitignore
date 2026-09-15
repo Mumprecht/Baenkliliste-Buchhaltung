@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Virtuelle Umgebung
+.venv/
+
+# Lokale Konfiguration / Zugangsdaten
+.env
+.env.*
+!.env.example
+
+# QFieldCloud-Daten
+data/*
+!data/.gitkeep
+
+# Erzeugte Exporte
+output/*
+!output/.gitkeep
+
+# IDE / Betriebssystem
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
