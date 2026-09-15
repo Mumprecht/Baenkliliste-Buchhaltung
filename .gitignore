@@ -24,3 +24,11 @@ output/*
 .idea/
 .DS_Store
 Thumbs.db
+
+# PyInstaller
+build/
+dist/
+*.spec
+
+# Sicherungsdateien
+*.bak

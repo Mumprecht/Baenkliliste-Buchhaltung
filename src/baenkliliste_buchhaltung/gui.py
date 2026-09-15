@@ -43,10 +43,40 @@ from .qfieldcloud import (
 
 PROJECT_ID = "aca32c7b-d721-4088-b43d-6802994a0f95"
 REMOTE_GPKG = Path("Baenkli-Standorte.gpkg")
-LOCAL_GPKG = Path("data/Baenkli-Standorte.gpkg")
 
 ORGANIZATION_NAME = "Mumprecht Software"
 APPLICATION_NAME = "Baenkliliste-Buchhaltung"
+
+
+def resource_path(relative_path: str) -> Path:
+    """Ermittelt den Pfad zu einer mitgelieferten Programmressource."""
+    if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
+        base_path = Path(sys._MEIPASS)
+    else:
+        base_path = Path(__file__).resolve().parents[2]
+
+    return base_path / relative_path
+
+
+def local_app_data_path() -> Path:
+    """Ermittelt den beschreibbaren lokalen Anwendungsordner."""
+    local_app_data = os.environ.get("LOCALAPPDATA")
+
+    if local_app_data:
+        return Path(local_app_data) / APPLICATION_NAME
+
+    return Path.home() / ("." + APPLICATION_NAME.lower())
+
+
+APP_DATA_DIR = local_app_data_path()
+LOCAL_GPKG = APP_DATA_DIR / "data" / "Baenkli-Standorte.gpkg"
+
+APP_ICON_PNG = resource_path(
+    "resources/Baenkliliste-Buchhaltung.png"
+)
+APP_ICON_ICO = resource_path(
+    "resources/Baenkliliste-Buchhaltung.ico"
+)
 
 
 class LoginDialog(QDialog):
@@ -383,14 +413,8 @@ class MainWindow(QMainWindow):
             "Bänkliste-Buchhaltung"
         )
 
-        icon_path = (
-            Path(__file__).resolve().parents[2]
-            / "resources"
-            / "Baenkliliste-Buchhaltung.png"
-        )
-
         self.setWindowIcon(
-            QIcon(str(icon_path))
+            QIcon(str(APP_ICON_ICO))
         )
 
         self.setMinimumSize(680, 800)
@@ -432,15 +456,9 @@ class MainWindow(QMainWindow):
             16,
         )
 
-        icon_path = (
-            Path(__file__).resolve().parents[2]
-            / "resources"
-            / "Baenkliliste-Buchhaltung.png"
-        )
-
         header_icon = QLabel()
         header_icon.setPixmap(
-            QIcon(str(icon_path)).pixmap(54, 54)
+            QIcon(str(APP_ICON_PNG)).pixmap(54, 54)
         )
         header_icon.setFixedSize(54, 54)
 
@@ -1217,6 +1235,18 @@ class MainWindow(QMainWindow):
 
 def run_gui() -> None:
     """Startet die grafische Benutzeroberfläche."""
+
+    if sys.platform == "win32":
+        import ctypes
+
+        app_user_model_id = (
+            "MumprechtSoftware.BaenklilisteBuchhaltung"
+        )
+
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(
+            app_user_model_id
+        )
+
     app = QApplication(sys.argv)
 
     app.setOrganizationName(
@@ -1225,6 +1255,10 @@ def run_gui() -> None:
 
     app.setApplicationName(
         APPLICATION_NAME
+    )
+
+    app.setWindowIcon(
+        QIcon(str(APP_ICON_ICO))
     )
 
     window = MainWindow()
