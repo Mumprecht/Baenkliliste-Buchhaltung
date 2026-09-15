@@ -6,6 +6,7 @@ requires-python = ">=3.14"
 dependencies = [
     "qfieldcloud-sdk==0.17.0",
     "keyring==25.7.0",
+    "PySide6==6.11.2",
 ]
 authors = [
     { name = "Urs Mumprecht" }
@@ -17,4 +18,5 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
 
